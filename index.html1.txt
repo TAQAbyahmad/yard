@@ -1,0 +1,64 @@
+import { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+
+export default function TaqaYard() {
+  const [materials, setMaterials] = useState([]);
+  const [persons, setPersons] = useState([]);
+
+  const [materialInput, setMaterialInput] = useState({ department: "", type: "", status: "In", time: "" });
+  const [personInput, setPersonInput] = useState({ name: "", cpr: "", vehicle: "", purpose: "", timeIn: "", timeOut: "" });
+
+  const handleMaterialAdd = () => {
+    setMaterials([...materials, { ...materialInput, id: Date.now() }]);
+    setMaterialInput({ department: "", type: "", status: "In", time: "" });
+  };
+
+  const handlePersonAdd = () => {
+    setPersons([...persons, { ...personInput, id: Date.now() }]);
+    setPersonInput({ name: "", cpr: "", vehicle: "", purpose: "", timeIn: "", timeOut: "" });
+  };
+
+  return (
+    <div className="p-4 space-y-8">
+      <h1 className="text-3xl font-bold">TAQA Yard by Ahmad Mubashar</h1>
+
+      <Card>
+        <CardContent className="space-y-2">
+          <h2 className="text-xl font-semibold">Material Record (Well Testing / Coil Tubing)</h2>
+          <Input placeholder="Department (Well Testing or Coil Tubing)" value={materialInput.department} onChange={e => setMaterialInput({ ...materialInput, department: e.target.value })} />
+          <Input placeholder="Material Type" value={materialInput.type} onChange={e => setMaterialInput({ ...materialInput, type: e.target.value })} />
+          <Input placeholder="Status (In/Out)" value={materialInput.status} onChange={e => setMaterialInput({ ...materialInput, status: e.target.value })} />
+          <Input type="datetime-local" value={materialInput.time} onChange={e => setMaterialInput({ ...materialInput, time: e.target.value })} />
+          <Button onClick={handleMaterialAdd}>Add Material Record</Button>
+
+          <ul>
+            {materials.map(mat => (
+              <li key={mat.id}>{mat.department} | {mat.type} | {mat.status} | {mat.time}</li>
+            ))}
+          </ul>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardContent className="space-y-2">
+          <h2 className="text-xl font-semibold">Persons In/Out Record</h2>
+          <Input placeholder="Person Name" value={personInput.name} onChange={e => setPersonInput({ ...personInput, name: e.target.value })} />
+          <Input placeholder="CPR Number" value={personInput.cpr} onChange={e => setPersonInput({ ...personInput, cpr: e.target.value })} />
+          <Input placeholder="Vehicle Number" value={personInput.vehicle} onChange={e => setPersonInput({ ...personInput, vehicle: e.target.value })} />
+          <Input placeholder="Purpose" value={personInput.purpose} onChange={e => setPersonInput({ ...personInput, purpose: e.target.value })} />
+          <Input type="datetime-local" placeholder="Time In" value={personInput.timeIn} onChange={e => setPersonInput({ ...personInput, timeIn: e.target.value })} />
+          <Input type="datetime-local" placeholder="Time Out" value={personInput.timeOut} onChange={e => setPersonInput({ ...personInput, timeOut: e.target.value })} />
+          <Button onClick={handlePersonAdd}>Add Person Record</Button>
+
+          <ul>
+            {persons.map(per => (
+              <li key={per.id}>{per.name} | {per.cpr} | {per.vehicle} | {per.purpose} | IN: {per.timeIn} | OUT: {per.timeOut}</li>
+            ))}
+          </ul>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
